@@ -36,14 +36,16 @@ const Main = () => {
     });
   });
 
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
   const totalInvestments = stocksOptions
     .map(x => x.purchasePrice * x.quantity)
-    .reduce((accumulator, currentValue) => accumulator + currentValue)
+    .reduce(reducer)
     .toFixed(2);
 
   const totalReceived = stocksOptions
     .map(x => x.atualPrice * x.quantity)
-    .reduce((accumulator, currentValue) => accumulator + currentValue);
+    .reduce(reducer);
 
   const red = { color: "red" };
   const green = { color: "green" };
