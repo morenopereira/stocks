@@ -10,7 +10,7 @@ const stocksOptions = [
   { symbol: "TAEE4.SA", purchasePrice: 9.64, quantity: 12 },
   { symbol: "PETR4.SA", purchasePrice: 29.84, quantity: 4 },
   { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
-  { symbol: "ITSA4.SA", purchasePrice: 14.09, quantity: 11 },
+  { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
   { symbol: "IRBR3.SA", purchasePrice: 38.89, quantity: 3 }
 ];
 
@@ -19,9 +19,12 @@ const Main = () => {
 
   const request = async () => {
     const response = await axios.get(
-      "https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&&stock_exchange_short=BVMF&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe"
+      `https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
     );
 
+    // const responseHistory = await axios.get(
+    //   `https://api.worldtradingdata.com/api/v1/history?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&sort=newest&date_from=2019-10-30&date_to=2019-11-05&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
+    // );
     setStocks(response.data.data);
   };
 
@@ -32,6 +35,8 @@ const Main = () => {
         stockOption.atualPrice = stock.price;
         stockOption.symbol = stock.symbol;
         stockOption.diff = parseFloat(stock.price) - stockOption.purchasePrice;
+        stockOption.closeYesterday = stock.close_yesterday;
+        stockOption.dayChange = stock.day_change
       }
     });
   });
@@ -53,7 +58,7 @@ const Main = () => {
   return (
     <div>
       <Button type="primary" className="btn" onClick={() => request()}>
-        Obtenha os resultados do momento
+        Obtenha os resultados mais recentes
       </Button>
       {stocks.length > 0 && (
         <>
@@ -64,21 +69,14 @@ const Main = () => {
             />
             <Statistic
               valueStyle={totalReceived < totalInvestments ? red : green}
-              title="Total Recebido"
-              value={`R$ ${totalReceived}`}
+              title="Total Acumulado"
+              value={`R$ ${totalReceived.toFixed(2)}`}
               precision={2}
             />
           </div>
           <div className="main">
             {stocksOptions.map(x => (
-              <StockCard
-                key={x.name}
-                name={x.name}
-                symbol={x.symbol}
-                purchasePrice={x.purchasePrice}
-                atualPrice={x.atualPrice}
-                diff={x.diff.toFixed(2)}
-              />
+              <StockCard data={x} key={x.name} />
             ))}
           </div>
         </>

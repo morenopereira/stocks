@@ -3,15 +3,17 @@ import { Card } from "antd";
 
 import './StockCard.css'
 
-const StockCard = ({ name, symbol, purchasePrice, atualPrice, diff }) => (
-  <Card title={symbol} bordered style={{ width: 400 }}>
-    <div key={name}>
-      <h3>{name}</h3>
-      <p>Preço de compra: R$ {purchasePrice}</p>
-      <p>Preço Atual: R$ {atualPrice}</p>
+const StockCard = ({ data }) => (
+  <Card title={data.symbol} bordered style={{ width: 400 }}>
+    <div key={data.name}>
+      <h3>{data.name}</h3>
+      <p>Preço de compra: R$ {data.purchasePrice}</p>
+      <p>Preço Atual: R$ {data.atualPrice}</p>
+      <p>Fechamento no dia antetior: R$ {data.closeYesterday}</p>
+      <p>Variação do dia: <span className={`${data.dayChange < 0 ? "red" : "green"}`}>{data.dayChange}%</span></p>
       <p>
-        {diff < 0 ? "Perdendo: " : "Ganhando: "}
-        <span className={`${diff < 0 ? "red" : "green"}`}>R$ {diff}</span>
+        {data.diff < 0 ? "Perdendo: " : "Ganhando: "}
+        <span className={`${data.diff < 0 ? "red" : "green"}`}>R$ {data.diff.toFixed(2)}</span>
       </p>
     </div>
   </Card>
