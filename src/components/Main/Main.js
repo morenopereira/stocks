@@ -8,10 +8,11 @@ import "./Main.css";
 
 const stocksOptions = [
   { symbol: "TAEE4.SA", purchasePrice: 9.64, quantity: 12 },
+  { symbol: "OIBR3.SA", purchasePrice: 0.97, quantity: 17 },
   { symbol: "PETR4.SA", purchasePrice: 29.84, quantity: 4 },
   { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
   { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
-  { symbol: "IRBR3.SA", purchasePrice: 38.89, quantity: 3 }
+  { symbol: "BBSE3.SA", purchasePrice: 35.28, quantity: 3 },
 ];
 
 const Main = () => {
@@ -19,13 +20,17 @@ const Main = () => {
 
   const request = async () => {
     const response = await axios.get(
-      `https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
+      `https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,BBSE3.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
+    );
+
+    const responseOi = await axios.get(
+      `https://api.worldtradingdata.com/api/v1/stock?symbol=OIBR3.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
     );
 
     // const responseHistory = await axios.get(
     //   `https://api.worldtradingdata.com/api/v1/history?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&sort=newest&date_from=2019-10-30&date_to=2019-11-05&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
     // );
-    setStocks(response.data.data);
+    setStocks(response.data.data.concat(responseOi.data.data));
   };
 
   stocks.forEach(stock => {
