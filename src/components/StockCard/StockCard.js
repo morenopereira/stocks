@@ -7,6 +7,7 @@ const StockCard = ({ data }) => (
   <Card title={data.symbol} bordered style={{ width: 400 }}>
     <div key={data.name}>
       <h3>{data.name}</h3>
+      <p>Quantidade: {data.quantity}</p>
       <p>Preço de compra: R$ {data.purchasePrice}</p>
       <p>Preço Atual: R$ {data.atualPrice}</p>
       <p>Fechamento no dia antetior: R$ {data.closeYesterday}</p>
