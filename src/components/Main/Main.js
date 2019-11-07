@@ -13,6 +13,7 @@ const stocksOptions = [
   { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
   { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
   { symbol: "BBSE3.SA", purchasePrice: 35.28, quantity: 3 },
+  // { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 3 },
 ];
 
 const Main = () => {
@@ -80,8 +81,8 @@ const Main = () => {
             />
           </div>
           <div className="main">
-            {stocksOptions.map(x => (
-              <StockCard data={x} key={x.name} />
+            {stocksOptions.map(stock => (
+              <StockCard data={stock} key={stock.name} />
             ))}
           </div>
         </>
