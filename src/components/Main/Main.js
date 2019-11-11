@@ -13,7 +13,7 @@ const stocksOptions = [
   { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
   { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
   { symbol: "BBSE3.SA", purchasePrice: 35.28, quantity: 3 },
-  // { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 3 },
+  { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 3 },
 ];
 
 const Main = () => {
@@ -25,7 +25,7 @@ const Main = () => {
     );
 
     const responseOi = await axios.get(
-      `https://api.worldtradingdata.com/api/v1/stock?symbol=OIBR3.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
+      `https://api.worldtradingdata.com/api/v1/stock?symbol=OIBR3.SA,GOAU4.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
     );
 
     // const responseHistory = await axios.get(
