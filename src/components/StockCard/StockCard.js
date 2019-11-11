@@ -14,7 +14,7 @@ const StockCard = ({ data }) => (
       <p>Variação do dia: <span className={`${data.dayChange < 0 ? "red" : "green"}`}>{data.dayChange}%</span></p>
       <p>
         {data.diff < 0 ? "Perdendo: " : "Ganhando: "}
-        <span className={`${data.diff < 0 ? "red" : "green"}`}>R$ {data.diff.toFixed(2)}</span>
+        <span className={`${data.diff < 0 ? "red" : "green"}`}>R$ {data.diff.toFixed(2) * data.quantity}</span>
       </p>
     </div>
   </Card>
