@@ -1,0 +1,2 @@
+.colorRed{color:red}.colorGreen{color:#28a745}.title{display:flex;justify-content:space-between}.main{flex-wrap:wrap}.btn,.main{display:flex;justify-content:center;align-items:center}.btn{margin:20px auto}.status{display:flex;align-items:center;justify-content:center;margin-top:20px}@media (max-width:800px){.status{flex-direction:column}}.ant-statistic{margin:20px;text-align:center}.ant-card{display:inline-block;margin:20px}.ant-card-body{min-height:270px}
+/*# sourceMappingURL=main.132e896e.chunk.css.map */
