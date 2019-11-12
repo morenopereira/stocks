@@ -1,60 +1,45 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { Button, Statistic, Icon } from "antd";
+import { getStocks, getStocksDetails } from '../../services/stocks';
+import reducer from '../../utils/reducer'
 
 import StockCard from "../StockCard/StockCard";
 
 import "./Main.css";
 
-const stocksOptions = [
-  { symbol: "TAEE4.SA", purchasePrice: 9.64, quantity: 12 },
-  { symbol: "OIBR3.SA", purchasePrice: 0.97, quantity: 17 },
-  { symbol: "PETR4.SA", purchasePrice: 29.84, quantity: 4 },
-  { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
-  { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
-  { symbol: "BBSE3.SA", purchasePrice: 35.28, quantity: 3 },
-  { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 10 },
-];
-
 const Main = () => {
+  const [stocksDB, setStocksDB] = useState([]);
   const [stocks, setStocks] = useState([]);
 
-  const request = async () => {
-    const response = await axios.get(
-      `https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,BBSE3.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
-    );
+  const getAll = async () => setStocksDB(await getStocks());
 
-    const responseOi = await axios.get(
-      `https://api.worldtradingdata.com/api/v1/stock?symbol=OIBR3.SA,GOAU4.SA&&stock_exchange_short=BVMF&&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
-    );
+  useEffect(() => {
+    getAll()
+  }, [])
 
-    // const responseHistory = await axios.get(
-    //   `https://api.worldtradingdata.com/api/v1/history?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,IRBR3.SA&sort=newest&date_from=2019-10-30&date_to=2019-11-05&api_token=CUeb5shDBvISI2poCkahG9cSB9LXTP33EJrB3yfc8EWwb4LtJsjlxjWCexXe`
-    // );
-    setStocks(response.data.data.concat(responseOi.data.data));
-  };
+  // console.log(stocksDB.map(x => x.symbol))
+
+  const request = async () => setStocks(await getStocksDetails());
 
   stocks.forEach(stock => {
-    stocksOptions.forEach(stockOption => {
+    stocksDB.forEach(stockOption => {
       if (stock.symbol === stockOption.symbol) {
         stockOption.name = stock.name;
         stockOption.atualPrice = stock.price;
         stockOption.symbol = stock.symbol;
         stockOption.diff = parseFloat(stock.price) - stockOption.purchasePrice;
         stockOption.closeYesterday = stock.close_yesterday;
-        stockOption.dayChange = stock.day_change
+        stockOption.dayChange = stock.day_change;
       }
     });
   });
 
-  const reducer = (accumulator, currentValue) => accumulator + currentValue
-
-  const totalInvestments = stocksOptions
+  const totalInvestments = stocksDB.length > 0 && stocksDB
     .map(x => x.purchasePrice * x.quantity)
     .reduce(reducer)
     .toFixed(2);
 
-  const totalReceived = stocksOptions
+  const totalReceived = stocksDB.length > 0 && stocksDB
     .map(x => x.atualPrice * x.quantity)
     .reduce(reducer);
 
@@ -88,9 +73,7 @@ const Main = () => {
             />
           </div>
           <div className="main">
-            {stocksOptions.map(stock => (
-              <StockCard data={stock} key={stock.name} />
-            ))}
+            <StockCard data={stocksDB} />
           </div>
         </>
       )}

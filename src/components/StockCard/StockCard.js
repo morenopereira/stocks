@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, Icon } from "antd";
+import { Card } from "antd";
 
 import './StockCard.css'
 
-const color = (arg) => arg < 0 ? "colorRed" : "colorGreen"
+const color = arg => arg < 0 ? "colorRed" : "colorGreen"
 
 const renderTitle = data => (
   <div className="title">
@@ -12,22 +12,34 @@ const renderTitle = data => (
   </div>
 )
 
-const StockCard = ({ data }) => (
-  <Card title={renderTitle(data)} bordered style={{ width: 400 }}>
-    <div key={data.name}>
-      <h3>{data.name}</h3>
-      <p>Quantidade: {data.quantity}</p>
-      <p>Patrimonio: <span className={color(data.diff)}>R$ {(data.atualPrice * data.quantity).toFixed(2)}</span></p>
-      <p>Preço de compra: R$ {data.purchasePrice}</p>
-      <p>Preço Atual: R$ {data.atualPrice}</p>
-      <p>Fechamento no dia antetior: R$ {data.closeYesterday}</p>
-      <p>Variação do dia: <span className={color(data.dayChange)}>{data.dayChange}%</span></p>
-      <p>
-        {data.diff < 0 ? "Perdendo: " : "Ganhando: "}
-        <span className={color(data.diff)}>R$ {(data.diff * data.quantity).toFixed(2)}</span>
-      </p>
-    </div>
-  </Card>
-);
+const StockCard = ({ data }) => {
+  return data.map(stock => (
+    <Card key={stock.name} title={renderTitle(stock)} bordered style={{ width: 400 }}>
+      <div key={stock.name}>
+        <h3>{stock.name}</h3>
+        <p>Quantidade: {stock.quantity}</p>
+        <p>
+          Patrimonio:{" "}
+          <span className={color(stock.diff)}>
+            R$ {(stock.atualPrice * stock.quantity).toFixed(2)}
+          </span>
+        </p>
+        <p>Preço de compra: R$ {stock.purchasePrice}</p>
+        <p>Preço Atual: R$ {stock.atualPrice}</p>
+        <p>Fechamento no dia antetior: R$ {stock.closeYesterday}</p>
+        <p>
+          Variação do dia:{" "}
+          <span className={color(stock.dayChange)}>{stock.dayChange}%</span>
+        </p>
+        <p>
+          {stock.diff < 0 ? "Perdendo: " : "Ganhando: "}
+          <span className={color(stock.diff)}>
+            R$ {(stock.diff * stock.quantity).toFixed(2)}
+          </span>
+        </p>
+      </div>
+    </Card>
+  ));
+};
 
 export default StockCard;
