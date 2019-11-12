@@ -2,7 +2,7 @@
   "name": "stocks",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://morenopereira.github.io/stocks",
+  "homepage": "https://stocks.laforet.dev",
   "dependencies": {
     "antd": "^3.25.0",
     "axios": "^0.19.0",
