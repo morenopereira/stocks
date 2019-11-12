@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button, Statistic } from "antd";
+import { Button, Statistic, Icon } from "antd";
 
 import StockCard from "../StockCard/StockCard";
 
@@ -13,7 +13,7 @@ const stocksOptions = [
   { symbol: "TRPL4.SA", purchasePrice: 23.11, quantity: 4 },
   { symbol: "ITSA4.SA", purchasePrice: 14.12, quantity: 11 },
   { symbol: "BBSE3.SA", purchasePrice: 35.28, quantity: 3 },
-  { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 3 },
+  { symbol: "GOAU4.SA", purchasePrice: 7.58, quantity: 10 },
 ];
 
 const Main = () => {
@@ -75,8 +75,15 @@ const Main = () => {
             />
             <Statistic
               valueStyle={totalReceived < totalInvestments ? red : green}
-              title="Total Acumulado"
+              title="Patrimônio total"
               value={`R$ ${totalReceived.toFixed(2)}`}
+              precision={2}
+            />
+            <Icon type="arrow-right" />
+            <Statistic
+              valueStyle={totalReceived < totalInvestments ? red : green}
+              title="Diferença"
+              value={`R$ ${(totalInvestments - totalReceived).toFixed(2)}`}
               precision={2}
             />
           </div>
