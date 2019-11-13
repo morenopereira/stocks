@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button, Statistic, Icon } from "antd";
-import { getStocks, getStocksDetails, addStock } from '../../services/stocks';
+import { Button } from "antd";
+import { getStocks, getStocksDetails, createStock } from '../../services/stocks';
 import reducer from '../../utils/reducer';
+import makeStock from '../../utils/makeStock';
 import AddStock from '../AddStock/AddStock';
 
-import StockCard from "../StockCard/StockCard";
+import StockList from "../StockList/StockList";
+import PageHeader from "../PageHeader/PageHeader";
 
 import "./Main.css";
 
@@ -18,20 +20,9 @@ const Main = () => {
     getAll()
   }, [])
 
-  const request = async () => setStocks(await getStocksDetails());
+  const getDetails = async () => setStocks(await getStocksDetails(stocksDB));
 
-  stocks.forEach(stock => {
-    stocksDB.forEach(stockOption => {
-      if (stock.symbol === stockOption.symbol) {
-        stockOption.name = stock.name;
-        stockOption.atualPrice = stock.price;
-        stockOption.symbol = stock.symbol;
-        stockOption.diff = parseFloat(stock.price) - stockOption.purchasePrice;
-        stockOption.closeYesterday = stock.close_yesterday;
-        stockOption.dayChange = stock.day_change;
-      }
-    });
-  });
+  makeStock(stocks, stocksDB)
 
   const totalInvestments = stocksDB.length > 0 && stocksDB
     .map(x => x.purchasePrice * x.quantity)
@@ -42,36 +33,19 @@ const Main = () => {
     .map(x => x.atualPrice * x.quantity)
     .reduce(reducer);
 
-  const red = { color: "red" };
-  const green = { color: "green" };
-
   return (
     <div>
-      <Button type="primary" className="btn" onClick={() => request()}>
-        Obtenha os resultados mais recentes
-      </Button>
-      {/* <AddStock onSubmit={addStock} /> */}
+      <header>
+        <Button type="primary" onClick={() => getDetails()}>
+          Obtenha os resultados mais recentes
+        </Button>
+        <AddStock createStock={createStock} />
+      </header>
       {stocks.length > 0 && (
         <>
-          <div className="status">
-            <Statistic
-              title="Total Investido"
-              value={`R$ ${totalInvestments}`}
-            />
-            <Statistic
-              valueStyle={totalReceived < totalInvestments ? red : green}
-              title="Patrimônio total"
-              value={`R$ ${totalReceived.toFixed(2)}`}
-            />
-            <Icon type="arrow-right" />
-            <Statistic
-              valueStyle={totalReceived < totalInvestments ? red : green}
-              title="Diferença"
-              value={`R$ ${(totalInvestments - totalReceived).toFixed(2)}`}
-            />
-          </div>
+          <PageHeader totalInvestments={totalInvestments} totalReceived={totalReceived} />
           <div className="main">
-            <StockCard data={stocksDB} />
+            <StockList stocks={stocksDB} />
           </div>
         </>
       )}

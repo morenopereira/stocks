@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, InputNumber } from 'antd';
-import api from '../../services/api'
+import { Modal, Button } from 'antd';
+import { createStock } from '../../services/stocks';
 
 import styles from './AddStock.module.scss';
 
-const AddStock = onSubmit => {
+const AddStock = () => {
   const [state, setState] = useState({
     visible: false,
     confirmLoading: false,
@@ -19,22 +19,12 @@ const AddStock = onSubmit => {
     });
   };
 
-  const handleOk = async () => {
-    // onSubmit({
-    //   name: state.name[0],
-    //   purchasePrice: state.purchasePrice[0]
-    // });
-
-    console.log(state)
-
-    await api(process.env.REACT_APP_API_URI, {
-      method: 'POST',
-      body: {
-        symbol: state.symbol[0],
-        purchasePrice: state.purchasePrice,
-        quantity: state.quantity
-      }
-    })
+  const handleOk = () => {
+    createStock({
+      symbol: state.symbol,
+      purchasePrice: state.purchasePrice,
+      quantity: state.quantity
+    });
 
     setState({
       visible: false,
@@ -47,13 +37,12 @@ const AddStock = onSubmit => {
     });
   };
 
-  const onChange = (e, value) => {
-    const { name } = e.target;
-    console.log(value)
+  const onChange = (e) => {
+    const { name, value } = e.target;
 
     setState({
       ...state,
-      [name]: [value],
+      [name]: value,
       visible: true,
     })
   }
@@ -67,22 +56,19 @@ const AddStock = onSubmit => {
         title="Adicionar Ação"
         visible={state.visible}
         onOk={handleOk}
-        confirmLoading={state.confirmLoading}
         onCancel={handleCancel}
       >
         <div className={styles.inputContainer}>
           <label>Códico</label>
-          <Input id="symbol" placeholder="Ex.: PETR4.SA" allowClear onChange={onChange} />
+          <input name="symbol" placeholder="Ex.: PETR4.SA" onChange={onChange} />
         </div>
         <div className={styles.inputContainer}>
           <label>Preço</label>
-          {/* <Input name="purchasePrice" type="number" allowClear onChange={onChange} /> */}
-          <InputNumber id="purchasePrice" min={1} max={10} defaultValue={3} onChange={onChange} />
+          <input name="purchasePrice" placeholder="Ex.: 23.4" type="number" onChange={onChange} />
         </div>
         <div className={styles.inputContainer}>
-          <label>Preço</label>
-          {/* <Input name="quantity" type="number" allowClear onChange={onChange} /> */}
-          <InputNumber id="quantity" min={1} max={10} defaultValue={0} onChange={onChange} />
+          <label>Quantidade de ações</label>
+          <input name="quantity" placeholder="Ex.: 23" type="number" onChange={onChange} />
         </div>
       </Modal>
     </>

@@ -7,21 +7,12 @@
   align-items: center;
 }
 
-.btn {
-  margin: 20px auto;
+header {
   display: flex;
-  justify-content: center;
-  align-items: center
-}
-
-
-.status {
-  display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  margin: 20px;
 }
-
 
 @media (max-width: 800px) {
   .status {

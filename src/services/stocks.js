@@ -8,9 +8,8 @@ export const getStocks = async () => {
   return response.data
 }
 
-export const getStocksDetails = async () => {
-  const req = await api(process.env.REACT_APP_API_URI);
-  const options = separate(req.data, 5).map(x => x.map(y => y.symbol))
+export const getStocksDetails = async (stocksDB) => {
+  const options = separate(stocksDB, 5).map(x => x.map(y => y.symbol))
   const temp = [];
 
   for(let i = 0; i < options.length; i++) {
@@ -22,11 +21,8 @@ export const getStocksDetails = async () => {
   return [...new Set([].concat(...temp))]
 }
 
-export const addStock = async data => {
-  const req = await api(process.env.REACT_APP_API_URI, {
-    method: 'POST',
-    body: data
-  })
+export const createStock = async data => {
+  const req = await api.post(process.env.REACT_APP_API_URI, data)
 
   return req;
 } 
