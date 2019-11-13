@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Statistic, Icon } from "antd";
-import { getStocks, getStocksDetails } from '../../services/stocks';
-import reducer from '../../utils/reducer'
+import { getStocks, getStocksDetails, addStock } from '../../services/stocks';
+import reducer from '../../utils/reducer';
+import AddStock from '../AddStock/AddStock';
 
 import StockCard from "../StockCard/StockCard";
 
@@ -16,8 +17,6 @@ const Main = () => {
   useEffect(() => {
     getAll()
   }, [])
-
-  // console.log(stocksDB.map(x => x.symbol))
 
   const request = async () => setStocks(await getStocksDetails());
 
@@ -51,6 +50,7 @@ const Main = () => {
       <Button type="primary" className="btn" onClick={() => request()}>
         Obtenha os resultados mais recentes
       </Button>
+      {/* <AddStock onSubmit={addStock} /> */}
       {stocks.length > 0 && (
         <>
           <div className="status">
@@ -62,14 +62,12 @@ const Main = () => {
               valueStyle={totalReceived < totalInvestments ? red : green}
               title="Patrimônio total"
               value={`R$ ${totalReceived.toFixed(2)}`}
-              precision={2}
             />
             <Icon type="arrow-right" />
             <Statistic
               valueStyle={totalReceived < totalInvestments ? red : green}
               title="Diferença"
               value={`R$ ${(totalInvestments - totalReceived).toFixed(2)}`}
-              precision={2}
             />
           </div>
           <div className="main">

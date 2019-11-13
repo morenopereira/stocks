@@ -1,7 +1,6 @@
 import api from './api';
+import separate from '../utils/separate'
 
-const apiTradingUri = `https://api.worldtradingdata.com/api/v1/stock?symbol=TAEE4.SA,PETR4.SA,TRPL4.SA,ITSA4.SA,BBSE3.SA&&stock_exchange_short=BVMF&&api_token=${process.env.REACT_APP_SECRET_TRADING_API}`
-const apiTradingAditionalUri = `https://api.worldtradingdata.com/api/v1/stock?symbol=OIBR3.SA,GOAU4.SA&&stock_exchange_short=BVMF&&api_token=${process.env.REACT_APP_SECRET_TRADING_API}`
 
 export const getStocks = async () => {
   const response = await api(process.env.REACT_APP_API_URI);
@@ -10,10 +9,24 @@ export const getStocks = async () => {
 }
 
 export const getStocksDetails = async () => {
-  const response = await api(apiTradingUri);
-  const responseAditional = await api(apiTradingAditionalUri);
+  const req = await api(process.env.REACT_APP_API_URI);
+  const options = separate(req.data, 5).map(x => x.map(y => y.symbol))
+  const temp = [];
 
-  return response.data.data.concat(responseAditional.data.data)
+  for(let i = 0; i < options.length; i++) {
+    const response = await api(`https://api.worldtradingdata.com/api/v1/stock?symbol=${options[i].join(',')}&stock_exchange_short=BVMF&&api_token=${process.env.REACT_APP_SECRET_TRADING_API}`)
+    
+    temp.push(response.data.data)
+  }
+  
+  return [...new Set([].concat(...temp))]
 }
 
-// console.log(separar(response.data.map(x => x.symbol), 5).map(y => y.map(z => api(z.join(',')))))
+export const addStock = async data => {
+  const req = await api(process.env.REACT_APP_API_URI, {
+    method: 'POST',
+    body: data
+  })
+
+  return req;
+} 
