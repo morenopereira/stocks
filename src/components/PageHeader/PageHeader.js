@@ -6,6 +6,14 @@ import styles from './PageHeader.module.scss';
 const red = { color: "red" };
 const green = { color: "green" };
 
+const renderResult = (totalInvestments, totalReceived) => {
+  if (totalInvestments && totalReceived) {
+    return `R$ ${(parseFloat(totalInvestments - totalReceived)).toFixed(2)}`
+  }
+
+  return ''
+}
+
 const PageHeader = ({ totalInvestments, totalReceived }) => (
   <div className={styles.status}>
     <Statistic title="Total Investido" value={`R$ ${totalInvestments}`} />
@@ -18,7 +26,7 @@ const PageHeader = ({ totalInvestments, totalReceived }) => (
     <Statistic
       valueStyle={totalReceived < totalInvestments ? red : green}
       title="Diferença"
-      value={`R$ ${(totalInvestments - totalReceived).toFixed(2)}`}
+      value={renderResult(totalInvestments, totalReceived)}
     />
   </div>
 );

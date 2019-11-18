@@ -1,5 +1,5 @@
 const makeStock = (stocks, stocksDB) => {
-  return   stocks.forEach(stock => {
+  return stocks.forEach(stock => {
     stocksDB.forEach(stockOption => {
       if (stock.symbol === stockOption.symbol) {
         stockOption.name = stock.name;
