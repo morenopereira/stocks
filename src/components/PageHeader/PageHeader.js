@@ -16,11 +16,12 @@ const renderResult = (totalInvestments, totalReceived) => {
 
 const PageHeader = ({ totalInvestments, totalReceived }) => (
   <div className={styles.status}>
+    {console.log(totalReceived)}
     <Statistic title="Total Investido" value={`R$ ${totalInvestments}`} />
     <Statistic
       valueStyle={totalReceived < totalInvestments ? red : green}
       title="Patrimônio total"
-      value={`R$ ${totalReceived.toFixed(2)}`}
+      value={`R$ ${totalReceived && totalReceived.toFixed(2)}`}
     />
     <Icon type="arrow-right" />
     <Statistic
