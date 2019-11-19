@@ -1,0 +1,13 @@
+.ant-statistic {
+  margin: 20px;
+  text-align: center
+}
+
+.ant-card {
+  display: inline-block;
+  margin: 20px;
+}
+
+.ant-card-body {
+  min-height: 270px;
+}
